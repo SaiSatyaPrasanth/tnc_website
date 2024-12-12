@@ -1,10 +1,10 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Banner from "../components/Banner";
+import CourseBanner from "../components/CourseBanner";
 import Courses from "../components/Courses";
 ---
 
 <Layout>
-  <Banner client:only="react" />
+  <CourseBanner client:only="react" />
   <Courses client:only="react" />
 </Layout>

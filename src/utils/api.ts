@@ -20,3 +20,13 @@ export const fetchData = async (endpoint: string, options?: RequestInit) => {
     throw error;
   }
 };
+
+export const formatDate = (dateString: string): string => {
+    const [year, month, day] = dateString.split("-");
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };

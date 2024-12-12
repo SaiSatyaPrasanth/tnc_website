@@ -1,102 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 interface BlogPost {
-  id: number;
-  thumbnail: string;
+  name: string;
   category: string;
-  uploaded_date: string; // Adjusted to string to match the provided structure
-  uploaded_by: string;
+  thumbnail: string;
   title: string;
-  tags: string[];
+  published_date: string;
+  user: string;
+  tags: string[] | null;
 }
 
-const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    thumbnail: "/img/blog/blog_post01.jpg",
-    category: "Exam Preparation",
-    uploaded_date: "01-10-2024",
-    uploaded_by: "Admin",
-    title: "Proven Study Tips to Master NORCET Exam Preparation",
-    tags: ["NORCET", "ExamPrep", "Success", "Motivation"],
-  },
-  {
-    id: 2,
-    thumbnail: "/img/blog/blog_post02.jpg",
-    category: "Exam Strategies",
-    uploaded_date: "28-09-2024",
-    uploaded_by: "Admin",
-    title: "Top Strategies to Ace State-Level Nursing Exams",
-    tags: ["Strategies", "Nursing", "State-Level", "Exams"],
-  },
-  {
-    id: 3,
-    thumbnail: "/img/blog/blog_post03.jpg",
-    category: "Nursing",
-    uploaded_date: "30-09-2024",
-    uploaded_by: "Admin",
-    title: "Key Subjects to Focus on for NORCET Success",
-    tags: ["NORCET", "Subjects", "Focus", "Nursing"],
-  },
-  {
-    id: 4,
-    thumbnail: "/img/blog/blog_post04.jpg",
-    category: "Study Techniques",
-    uploaded_date: "03-10-2024",
-    uploaded_by: "Admin",
-    title: "Balancing Online & Offline Nursing Exam Studies",
-    tags: ["Study", "Online", "Offline", "Balance"],
-  },
-  {
-    id: 5,
-    thumbnail: "/img/blog/blog_post05.jpg",
-    category: "RRB Nurse Prep",
-    uploaded_date: "30-09-2024",
-    uploaded_by: "Admin",
-    title: "Effective Study Techniques for RRB Staff Nurse",
-    tags: ["RRB", "Staff", "Nurse", "StudyTechniques"],
-  },
-  {
-    id: 6,
-    thumbnail: "/img/blog/blog_post06.jpg",
-    category: "Study Resources",
-    uploaded_date: "27-09-2024",
-    uploaded_by: "Admin",
-    title: "Must-Have Resources for Nursing Exam Success",
-    tags: ["Resources", "Nursing", "Exam", "Success"],
-  },
-  {
-    id: 7,
-    thumbnail: "/img/blog/blog_post07.jpg",
-    category: "KGMU Exam",
-    uploaded_date: "02-10-2024",
-    uploaded_by: "Admin",
-    title: "Your Ultimate Guide to KGMU Exam Preparation",
-    tags: ["KGMU", "Exam", "Guide", "Preparation"],
-  },
-  {
-    id: 8,
-    thumbnail: "/img/blog/blog_post08.jpg",
-    category: "Success Stories",
-    uploaded_date: "26-09-2024",
-    uploaded_by: "Admin",
-    title: "TNC Nursing’s High Success Rates in Exams",
-    tags: ["Success", "TNC", "Nursing", "Exams"],
-  },
-  {
-    id: 9,
-    thumbnail: "/img/blog/blog_post09.jpg",
-    category: "Exam Success",
-    uploaded_date: "03-10-2024",
-    uploaded_by: "Admin",
-    title: "Common Mistakes to Avoid in Nursing Exams",
-    tags: ["Mistakes", "Nursing", "Exams", "Avoid"],
-  },
-];
-
 const formatDate = (dateString: string): string => {
-  const [day, month, year] = dateString.split("-");
-  const date = new Date(Number(year), Number(month) - 1, Number(day));
+  const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -105,8 +21,29 @@ const formatDate = (dateString: string): string => {
 };
 
 const BlogArea: React.FC = () => {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.1.120:8012/api/resource/Website blogs?fields=[\"name\",\"category\",\"thumbnail\",\"title\",\"published_date\",\"user\",\"tags\"]"
+        );
+        const data = response.data.data.map((post: BlogPost) => ({
+          ...post,
+          tags: post.tags ? JSON.parse(post.tags) : [], // Parse stringified tags or set to an empty array
+        }));
+        setBlogPosts(data);
+        console.log(data)
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleTagClick = (tag: string) => {
     setSelectedTags((prevTags) =>
@@ -128,7 +65,7 @@ const BlogArea: React.FC = () => {
       : true;
     const matchesTags =
       selectedTags.length === 0 ||
-      selectedTags.every((tag) => post.tags.includes(tag));
+      selectedTags.every((tag) => post.tags?.includes(tag));
     return matchesCategory && matchesTags;
   });
 
@@ -144,14 +81,14 @@ const BlogArea: React.FC = () => {
             <div className="col-xl-9 col-lg-8">
               <div className="row gutter-20">
                 {filteredPosts.map((post) => (
-                  <div className="col-xl-4 col-md-6" key={post.id}>
+                  <div className="col-xl-4 col-md-6" key={post.name}>
                     <div className="blog__post-item shine__animate-item">
                       <div className="blog__post-thumb">
                         <a
                           className="shine__animate-link"
-                          href={`/blogs/${post.id}`}
+                          href={`/blogs/${post.name}`}
                         >
-                          <img src={post.thumbnail} alt="img" />
+                          <img src={`http://192.168.1.120:8012/${post.thumbnail}`} alt={post.title} />
                         </a>
 
                         <a href="blog.html" className="post-tag">
@@ -163,16 +100,16 @@ const BlogArea: React.FC = () => {
                           <ul className="list-wrap">
                             <li>
                               <i className="flaticon-calendar"></i>
-                              {formatDate(post.uploaded_date)}
+                              {formatDate(post.published_date)}
                             </li>
                             <li>
                               <i className="flaticon-user-1"></i>by{" "}
-                              <a href="blog-details.html">{post.uploaded_by}</a>
+                              <a href={`/blogs/${post.name}`}>{post.user}</a>
                             </li>
                           </ul>
                         </div>
                         <h4 className="title">
-                          <a href="blog-details.html">{post.title}</a>
+                          <a href={`/blogs/${post.name}`}>{post.title}</a>
                         </h4>
                       </div>
                     </div>
@@ -193,7 +130,6 @@ const BlogArea: React.FC = () => {
                   <h4 className="widget-title">Categories</h4>
                   <div className="shop-cat-list">
                     <ul className="list-wrap">
-                      {/* <i className="flaticon-angle-right"></i> */}
                       {[...new Set(blogPosts.map((post) => post.category))].map(
                         (category) => (
                           <li key={category}>
@@ -229,7 +165,7 @@ const BlogArea: React.FC = () => {
                 <div className="blog-widget">
                   <h4 className="widget-title">Tags</h4>
                   <div className="tagcloud">
-                    {[...new Set(blogPosts.flatMap((post) => post.tags))].map(
+                    {[...new Set(blogPosts.flatMap((post) => post.tags || []))].map(
                       (tag) => (
                         <a
                           href="#"

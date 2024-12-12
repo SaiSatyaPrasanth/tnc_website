@@ -1,0 +1,18 @@
+---
+import BlogArea from "@/components/Blogs";
+import Layout from "@/layouts/Layout.astro";
+
+const { slug } = Astro.params;
+export const prerender = false;
+
+console.log("Hi");
+---
+
+<Layout>
+  <h1>Test</h1>
+  <h2>{slug}</h2>
+  <BlogArea client:only="react" />
+</Layout>
+<script>
+  console.log("BYEEEEEEEEEEE");
+</script>

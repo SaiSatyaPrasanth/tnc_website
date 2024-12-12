@@ -27,7 +27,7 @@ const BlogPostArea: React.FC = () => {
             date: formatDate(post.published_date), // Format the date
             user: 'Admin', // Default user, adjust as needed
           }));
-          setBlogPosts(posts);
+          setBlogPosts(posts.slice(0, 3));
         }
       } catch (error) {
         console.error('Error fetching blog posts:', error);
