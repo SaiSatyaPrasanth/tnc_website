@@ -1,0 +1,86 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Contact from "../components/Contact";
+---
+
+<Layout>
+  <!-- main-area -->
+  <main class="main-area fix">
+    <!-- contact-area -->
+    <section
+      class="contact-area section-py-120"
+      data-aos="fade-up"
+      data-aos-delay="200"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="contact-info-wrap">
+              <ul class="list-wrap">
+                <li>
+                  <div class="icon">
+                    <img
+                      src="/img/icons/map.svg"
+                      alt="img"
+                      class="injectable"
+                    />
+                  </div>
+                  <div class="content">
+                    <h4 class="title">Address</h4>
+                    <p>
+                      Near Bharat petrol pump, Golumber, Anisabad, Patna, Bihar
+                      800002
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <div class="icon">
+                    <img
+                      src="/img/icons/contact_phone.svg"
+                      alt="img"
+                      class="injectable"
+                    />
+                  </div>
+                  <div class="content">
+                    <h4 class="title">Phone</h4>
+                    <a href="tel:+91 74849 99051">(+91) 74849 99051</a>
+                  </div>
+                </li>
+                <li>
+                  <div class="icon">
+                    <img
+                      src="/img/icons/emial.svg"
+                      alt="img"
+                      class="injectable"
+                    />
+                  </div>
+                  <div class="content">
+                    <h4 class="title">E-mail Address</h4>
+                    <a href="mailto:tncnursing@gmail.com"
+                      >tncnursing@gmail.com</a
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <Contact client:only="react" />
+          </div>
+        </div>
+        <!-- contact-map -->
+        <div class="contact-map" data-aos="fade-up" data-aos-delay="300">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14394.677083458915!2d85.097273!3d25.5826678!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f2a94bb6938537%3A0x30ffa69f899712b0!2sTNC%20NURSING%20CLASSES!5e0!3m2!1sen!2sin!4v1727941905511!5m2!1sen!2sin"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <!-- contact-map-end -->
+      </div>
+    </section>
+    <!-- contact-area-end -->
+  </main>
+  <!-- main-area-end -->
+</Layout>

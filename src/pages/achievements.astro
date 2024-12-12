@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Banner from "../components/Banner";
+import RankersCard from "@/components/RankersCard";
+---
+
+<Layout>
+  <Banner client:only="react" />
+  <RankersCard client:only="react" />
+</Layout>

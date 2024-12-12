@@ -1,0 +1,196 @@
+---
+const pages = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about-us/" },
+  { name: "Courses", path: "/courses/" },
+  { name: "Achievements", path: "/achievements/" },
+  { name: "Blogs", path: "/blogs/" },
+  { name: "Exams", path: "/exam-details/" },
+  { name: "Previous Year MCQ", path: "/previous-year-mcq/" },
+  { name: "Contact", path: "/contact/" },
+];
+
+const currentPath = Astro.url.pathname;
+
+const hasSubMenu = (name) => name === "Exams"; // Example: Check if submenu exists
+const subMenuItems = {
+  Exams: [
+    { name: "AIIMS NORCET", path: "/exam-details" },
+    { name: "Nursing Officer Exams", path: "/exam-details" },
+    { name: "CHO", path: "/exam-details" },
+  ],
+};
+---
+
+<button class="scroll__top scroll-to-target" data-target="html">
+  <i class="tg-flaticon-arrowhead-up"></i>
+</button>
+<!-- Scroll-top-end-->
+<div id="header-fixed-height"></div>
+<div id="sticky-header" class="tg-header__area tg-header__style-three">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="tgmenu__wrap">
+          <nav class="tgmenu__nav">
+            <div class="logo">
+              <a href="/">
+                <img src="/img/TNC-logo.png" alt="Logo" style="width: 60px;" />
+              </a>
+            </div>
+            <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
+              <ul class="navigation">
+                {
+                  pages.map((page) => (
+                    <li
+                      class={`${
+                        currentPath === page.path ? "active" : ""
+                      } ${hasSubMenu(page.name) ? "menu-item-has-children" : ""}`}
+                    >
+                      <a href={page.path}>{page.name}</a>
+                      {hasSubMenu(page.name) && (
+                        <ul class="sub-menu">
+                          {subMenuItems[page.name]?.map((subItem) => (
+                            <li
+                              class={`${
+                                currentPath === subItem.path ? "active" : ""
+                              }`}
+                            >
+                              <a href={subItem.path}>{subItem.name}</a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div class="tgmenu__action">
+              <ul class="list-wrap">
+                <li class="header-btn login-btn">
+                  <a href="#">NORCET 8.0</a>
+                </li>
+              </ul>
+            </div>
+            <div class="mobile-nav-toggler">
+              <i class="tg-flaticon-menu-1"></i>
+            </div>
+          </nav>
+        </div>
+        <!-- Mobile Menu -->
+        <!-- <div class="tgmobile__menu">
+          <nav class="tgmobile__menu-box">
+            <div class="close-btn">
+              <i class="tg-flaticon-close-1"></i>
+            </div>
+            <div class="nav-logo">
+              <a href="/">
+                <img src="/img/TNC-logo.png" alt="Logo" style="width: 60px;" />
+              </a>
+            </div>
+            <div class="tgmobile__search">
+              <form action="#">
+                <input type="text" placeholder="Search here..." />
+                <button><i class="fas fa-search"></i></button>
+              </form>
+            </div>
+            <div class="tgmobile__menu-outer">
+              <ul class="navigation">
+                {
+                  pages.map((page) => (
+                    <li
+                      class={`${
+                        currentPath === page.path ? "active" : ""
+                      } ${hasSubMenu(page.name) ? "menu-item-has-children" : ""}`}
+                    >
+                      <a href={page.path}>{page.name}</a>
+                      {hasSubMenu(page.name) && (
+                        <ul class="sub-menu">
+                          {subMenuItems[page.name]?.map((subItem) => (
+                            <li
+                              class={`${
+                                currentPath === subItem.path ? "active" : ""
+                              }`}
+                            >
+                              <a href={subItem.path}>{subItem.name}</a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div class="social-links">
+              <ul class="list-wrap">
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+              </ul>
+            </div>
+          </nav>
+        </div> -->
+        <div class="tgmobile__menu">
+          <nav class="tgmobile__menu-box">
+            <div class="close-btn">
+              <i class="tg-flaticon-close-1"></i>
+            </div>
+            <div class="nav-logo">
+              <a href="/">
+                <img src="/img/TNC-logo.png" alt="Logo" style="width: 60px;" />
+              </a>
+            </div>
+            <div class="tgmobile__search">
+              <form action="#">
+                <input type="text" placeholder="Search here..." />
+                <button><i class="fas fa-search"></i></button>
+              </form>
+            </div>
+            <ul class="navigation">
+              {
+                pages.map((page) => (
+                  <li
+                    class={`${
+                      currentPath === page.path ? "active" : ""
+                    } ${hasSubMenu(page.name) ? "menu-item-has-children" : ""}`}
+                  >
+                    <a href={page.path}>{page.name}</a>
+                    {hasSubMenu(page.name) && (
+                      <ul class="sub-menu">
+                        {subMenuItems[page.name]?.map((subItem) => (
+                          <li
+                            class={`${
+                              currentPath === subItem.path ? "active" : ""
+                            }`}
+                          >
+                            <a href={subItem.path}>{subItem.name}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))
+              }
+            </ul>
+            <div class="social-links">
+              <ul class="list-wrap">
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        <div class="tgmobile__menu-backdrop"></div>
+        <!-- End Mobile Menu -->
+      </div>
+    </div>
+  </div>
+</div>

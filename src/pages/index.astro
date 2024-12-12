@@ -1,11 +1,677 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Banner from "../components/Banner.tsx";
+import Notification from "../components/Notification.tsx";
+import Layout from "../layouts/Layout.astro";
+import Carousel from "../components/Slider_testimonial.tsx";
+import CourseSlider from "../components/CourseSlider.astro";
+import AchievementSlider from "../components/AchievementSlider.astro";
+import EventArea from "@/components/EventArea.tsx";
+import BlogArea from "../components/BlogArea.tsx";
 ---
 
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/animate.min.css" />
+<link rel="stylesheet" href="/css/magnific-popup.css" />
+<link rel="stylesheet" href="/css/fontawesome-all.min.css" />
+<link rel="stylesheet" href="/css/flaticon-skillgro.css" />
+<link rel="stylesheet" href="/css/flaticon-skillgro-new.css" />
+<!-- <link rel="stylesheet" href="/css/swiper-bundle.min.css" /> -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<link rel="stylesheet" href="/css/default-icons.css" />
+<link rel="stylesheet" href="/css/select2.min.css" />
+<link rel="stylesheet" href="/css/odometer.css" />
+<link rel="stylesheet" href="/css/aos.css" />
+<link rel="stylesheet" href="/css/plyr.css" />
+<link rel="stylesheet" href="/css/spacing.css" />
+<link rel="stylesheet" href="/css/main.css" />
+<style>
+  .active a {
+    font-weight: bold;
+    color: #ff0000; /* Highlight color */
+  }
+  .slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    height: auto; /* Maintain height based on aspect ratio */
+    aspect-ratio: 1920 / 550;
+  }
+
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .slides img {
+    width: 1920px;
+    height: auto;
+    object-fit: cover;
+  }
+
+  button.prev,
+  button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 1;
+  }
+
+  button.prev {
+    left: 1rem;
+  }
+
+  button.next {
+    right: 1rem;
+  }
+
+  .pagination {
+    position: absolute;
+    bottom: 10px; /* Adjust based on your preference */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: #bababa;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .dot.active {
+    background-color: #f80300;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    button.prev,
+    button.next {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    button.prev {
+      left: 0.5rem;
+    }
+
+    button.next {
+      right: 0.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    button.prev,
+    button.next {
+      padding: 0.3rem;
+      font-size: 0.8rem;
+    }
+
+    button.prev {
+      left: 0.3rem;
+    }
+
+    button.next {
+      right: 0.3rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+    margin-bottom: 20px;
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-play-button {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    box-sizing: content-box;
+    display: block;
+    width: 32px;
+    height: 44px;
+    padding: 18px 20px 18px 28px;
+  }
+
+  .video-play-button:before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: block;
+    width: 55px;
+    height: 55px;
+    background: #eb2055;
+    border-radius: 50%;
+    animation: pulse-border 1100ms ease-out infinite;
+  }
+
+  .video-play-button:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: block;
+    width: 60px;
+    height: 60px;
+    background: #eb2055;
+    border-radius: 50%;
+    transition: all 200ms;
+  }
+
+  .video-play-button span {
+    display: block;
+    position: relative;
+    z-index: 3;
+    width: 0;
+    height: 0;
+    border-left: 19px solid #fff;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    top: 10px;
+    left: 5px;
+  }
+
+  @keyframes pulse-border {
+    0% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+      opacity: 0;
+    }
+  }
+</style>
+
 <Layout>
-	<Welcome />
+  <Banner client:only="react" />
+  <Notification client:only="react" />
+  <Carousel client:only="react" />
+  <!-- choose-area -->
+  <section class="choose__area-four tg-motion-effects section-py-140">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-6 col-md-10">
+          <div class="choose__img-four">
+            <div class="left__side">
+              <img
+                src="/img/others/h7_choose_img01.jpg"
+                alt="img"
+                data-aos="fade-down"
+                data-aos-delay="200"
+              />
+              <img
+                src="/img/others/h7_choose_img02.jpg"
+                alt="img"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              />
+            </div>
+            <div class="right__side" data-aos="fade-left" data-aos-delay="400">
+              <img src="/img/others/h7_choose_img03.jpg" alt="img" />
+              <a
+                href="https://youtu.be/Txk7RiL9i0Y?si=NzRyi4B-Pbv5OBOJ"
+                class="popup-video"><i class="fas fa-play"></i></a
+              >
+            </div>
+            <img
+              src="/img/others/h7_choose_shape01.svg"
+              alt="shape"
+              class="shape shape-one tg-motion-effects4"
+            />
+            <img
+              src="/img/others/h7_choose_shape02.svg"
+              alt="shape"
+              class="shape shape-two"
+            />
+            <!-- <img src="/img/others/h7_choose_shape03.svg" alt="shape" class="shape shape-three tg-motion-effects7"> -->
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="choose__content-four">
+            <div class="section__title mb-20">
+              <span class="sub-title">About Us</span>
+              <h2 class="title bold">
+                Empowering Future Nurses with Excellence
+              </h2>
+            </div>
+            <p>
+              At TNC Nursing in Patna, we empower aspiring nursing professionals
+              with comprehensive education and expert guidance. Recognized for
+              our high success rate in competitive nursing exams, we offer both
+              online and offline courses tailored to diverse learning needs,
+              supported by experienced faculty and structured study plans to
+              help students achieve their career goals.
+            </p>
+            <ul class="about__info-list list-wrap">
+              <li class="about__info-list-item">
+                <i class="flaticon-angle-right"></i>
+                <p class="content">Comprehensive Education and Guidance</p>
+              </li>
+              <li class="about__info-list-item">
+                <i class="flaticon-angle-right"></i>
+                <p class="content">High Success Rate Achieved</p>
+              </li>
+              <li class="about__info-list-item">
+                <i class="flaticon-angle-right"></i>
+                <p class="content">Experienced Faculty Support</p>
+              </li>
+            </ul>
+            <div class="tg-button-wrap">
+              <a class="btn arrow-btn" href="about-us.html"
+                >Learn More About Us<img
+                  src="/img/icons/right_arrow.svg"
+                  alt="img"
+                  class="injectable"
+                /></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- choose-area-end -->
+
+  <section
+    class="testimonial__area-two section-py-120 testimonial__bg"
+    data-background="/img/bg/testimonials_bg.jpg"
+  >
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5">
+          <div class="section__title text-center mb-50">
+            <span class="sub-title">Our Testimonials</span>
+            <h2 class="title">Voices of Our Success</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-carousel-container">
+        <div id="custom-carousel" class="custom-carousel">
+          <img
+            src="/img/testimonial-1.png"
+            alt="Image 1"
+            class="custom-carousel-image"
+            onclick="openCustomImage(this)"
+          />
+          <img
+            src="/img/testimonial-2.png"
+            alt="Image 2"
+            class="custom-carousel-image"
+            onclick="openCustomImage(this)"
+          />
+          <img
+            src="/img/testimonial-3.png"
+            alt="Image 3"
+            class="custom-carousel-image"
+            onclick="openCustomImage(this)"
+          />
+          <img
+            src="/img/testimonial-4.png"
+            alt="Image 4"
+            class="custom-carousel-image"
+            onclick="openCustomImage(this)"
+          />
+        </div>
+        <button
+          id="custom-prev-btn"
+          class="custom-carousel-btn custom-prev"
+          onclick="customPrevSlide()">❮</button
+        >
+        <button
+          id="custom-next-btn"
+          class="custom-carousel-btn custom-next"
+          onclick="customNextSlide()">❯</button
+        >
+      </div>
+
+      <!-- Modal for opening image -->
+      <div
+        id="custom-image-modal"
+        class="custom-image-modal"
+        onclick="closeCustomImage()"
+      >
+        <span class="custom-close">&times;</span>
+        <img class="custom-modal-content" id="custom-modal-image" />
+      </div>
+    </div>
+  </section>
+
+  <!-- course-area -->
+  <section
+    class="courses-area section-pt-120 section-pb-90"
+    data-background="/img/bg/courses_bg.jpg"
+    data-aos="fade-up"
+    data-aos-delay="200"
+  >
+    <div class="container">
+      <div class="section__title-wrap">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="section__title text-center mb-20">
+              <span class="sub-title">Our Courses</span>
+              <h2 class="title">Unlock Your Potential with Our Courses!</h2>
+              <p class="desc">
+                Explore our diverse courses designed to equip you with the
+                knowledge and skills needed for a successful nursing career.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <CourseSlider />
+  </section>
+  <!-- course-area-end -->
+
+  <!-- features-area -->
+  <section class="instructor__area" data-aos="fade-up" data-aos-delay="200">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8">
+          <div class="section__title text-center mb-40">
+            <span class="sub-title">Why Choose Us?</span>
+            <h2 class="title">Choose Excellence: Join TNC Nursing</h2>
+            <p>
+              Join TNC Nursing for expert guidance, proven success, <br /> and tailored
+              learning experiences.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="features__item-wrap">
+        <div class="row justify-content-center">
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-right"
+            data-aos-delay="200"
+          >
+            <div class="features__item-two">
+              <div class="features__content-two">
+                <div class="content-top">
+                  <div class="features__icon-two">
+                    <img
+                      src="/img/icons/h2_features_icon01.svg"
+                      alt="img"
+                      class="injectable"
+                    />
+                  </div>
+                  <h2 class="title">Expert Faculty</h2>
+                </div>
+                <p>
+                  Gain insights from experienced professionals with vast
+                  expertise in nursing education and practice.
+                </p>
+              </div>
+              <div class="features__item-shape">
+                <img
+                  src="/img/others/features_item_shape.svg"
+                  alt="img"
+                  class="injectable"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="250"
+          >
+            <div class="features__item-two">
+              <div class="features__content-two">
+                <div class="content-top">
+                  <div class="features__icon-two">
+                    <img
+                      src="/img/icons/h2_features_icon02.svg"
+                      alt="img"
+                      class="injectable"
+                    />
+                  </div>
+                  <h2 class="title">Proven Success</h2>
+                </div>
+                <p>
+                  Achieve your professional career goals with our exceptional
+                  high success rate in competitive nursing exams.
+                </p>
+              </div>
+              <div class="features__item-shape">
+                <img
+                  src="/img/others/features_item_shape.svg"
+                  alt="img"
+                  class="injectable"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-left"
+            data-aos-delay="300"
+          >
+            <div class="features__item-two">
+              <div class="features__content-two">
+                <div class="content-top">
+                  <div class="features__icon-two">
+                    <img
+                      src="/img/icons/h2_features_icon03.svg"
+                      alt="img"
+                      class="injectable"
+                    />
+                  </div>
+                  <h2 class="title">Comprehensive Resources</h2>
+                </div>
+                <p>
+                  Access a comprehensive range of study materials, practice
+                  exams, interactive quizzes, and online learning tools.
+                </p>
+              </div>
+              <div class="features__item-shape">
+                <img
+                  src="/img/others/features_item_shape.svg"
+                  alt="img"
+                  class="injectable"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- features-area-end -->
+
+  <!-- fact-area -->
+  <section class="fact__area">
+    <div class="container">
+      <div class="fact__inner-wrap">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="fact__item">
+              <h2 class="count">
+                <span class="odometer" data-count="10"></span>K+
+              </h2>
+              <p>Students coached annually</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="fact__item">
+              <h2 class="count">
+                <span class="odometer" data-count="30"></span>+
+              </h2>
+              <p>Expert Instructors</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="fact__item">
+              <h2 class="count">
+                <span class="odometer" data-count="15"></span>+
+              </h2>
+              <p>Years of Teaching Experience</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="fact__item">
+              <h2 class="count">
+                <span class="odometer" data-count="2000"></span>+
+              </h2>
+              <p>Practice Questions in Our app</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- fact-area-end -->
+
+  <!-- Achievements Slider -->
+  <section class="faq__area" data-aos="fade-up" data-aos-delay="200">
+    <div class="container">
+      <div class="section__title-wrap">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="section__title text-center mb-40">
+              <h2 class="title">Latest Achievements: <br /> Proud Moments</h2>
+              <p class="desc">
+                Our students have achieved remarkable results, showcasing their
+                dedication and hard work. We celebrate their successes and
+                commitment to excellence at TNC Nursing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider" data-aos="fade-right" data-aos-delay="200">
+        <div class="slide_viewer">
+          <div class="slide_group">
+            <div class="slide">
+              <img src="/img/others/Slider-1.jpg" alt="" />
+            </div>
+            <div class="slide">
+              <img src="/img/others/Slider-2.jpg" alt="" />
+            </div>
+            <div class="slide">
+              <img src="/img/others/Slider-1.jpg" alt="" />
+            </div>
+            <div class="slide">
+              <img src="/img/others/Slider-2.jpg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div><!-- End // .slider -->
+
+      <div class="slide_buttons"></div>
+    </div>
+  </section>
+  <!-- Achievements Slider-end -->
+
+  <!-- newsletter-area -->
+  <section class="newsletter__area" data-aos="fade-up" data-aos-delay="200">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-4">
+          <div class="newsletter__img-wrap">
+            <img
+              src="/img/others/newsletter_img.png"
+              alt="img"
+              data-aos="fade-right"
+              data-aos-delay="250"
+            />
+            <img
+              src="/img/others/newsletter_shape01.png"
+              alt="img"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            />
+            <img
+              src="/img/others/newsletter_shape02.png"
+              alt="img"
+              class="alltuchtopdown"
+            />
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="newsletter__content">
+            <h2 class="title">
+              Take the First Step Toward Your Nursing Career <span
+                >Join TNC Nursing Today!</span
+              >
+            </h2>
+            <div class="newsletter__form">
+              <form action="#">
+                <button
+                  type="submit"
+                  class="btn"
+                  data-aos="fade-up"
+                  data-aos-delay="300">Enroll Now for Success</button
+                >
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="newsletter__shape">
+      <img
+        src="/img/others/newsletter_shape03.png"
+        alt="img"
+        data-aos="fade-left"
+        data-aos-delay="400"
+      />
+    </div>
+  </section>
+  <!-- newsletter-area-end -->
+
+  <EventArea client:only="react" />
+
+  <BlogArea client:only="react" />
+
+  <script src="/js/jquery.odometer.min.js" is:inline></script>
+  <script src="/js/select2.min.js" is:inline></script>
+  <script src="/js/main.js" is:inline></script>
 </Layout>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "thumbnail": "/img/blog/blog_post01.jpg",
+    "category": "Exam Preparation",
+    "uploaded_date": "01-10-2024",
+    "uploaded_by": "Admin",
+    "title": "Proven Study Tips to Master NORCET Exam Preparation",
+    "tags": ["NORCET", "ExamPrep", "Success", "Motivation"]
+  },
+  {
+    "id": 2,
+    "thumbnail": "/img/blog/blog_post02.jpg",
+    "category": "Exam Strategies",
+    "uploaded_date": "28-09-2024",
+    "uploaded_by": "Admin",
+    "title": "Top Strategies to Ace State-Level Nursing Exams",
+    "tags": ["Strategies", "Nursing", "State-Level", "Exams"]
+  }
+]

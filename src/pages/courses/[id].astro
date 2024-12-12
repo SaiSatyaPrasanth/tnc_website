@@ -1,0 +1,274 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const courses: coursesData[] = [
+  {
+    id: 1,
+    thumbnail: "/img/courses/course_thumb01.jpg",
+    category: "NORCET",
+    title: "NORCET Preparation Course 2024",
+    description:
+      "The NORCET Preparation Course 2024 equips nursing students with essential knowledge and skills to excel in the Nursing Officer Recruitment Common Eligibility Test (NORCET).",
+    old_price: "\u20b918,000",
+    discount_price: "15,000",
+    popularity: "Most Popular",
+  },
+  {
+    id: 2,
+    thumbnail: "/img/courses/course_thumb02.jpg",
+    category: "RRB Staff Nursing",
+    title: "RRB Staff Nursing Exam 2024 Preparation",
+    description:
+      "The RRB Staff Nursing Exam 2024 Preparation course equips students with essential knowledge and skills to excel in the exam, focusing on nursing theory and practical applications.",
+    old_price: "18,500",
+    discount_price: "\u20b915,000",
+    popularity: "Popular",
+  },
+  {
+    id: 3,
+    thumbnail: "/img/courses/course_thumb03.jpg",
+    category: "KGMU EXAM",
+    title: "KGMU Nursing Exam Preparation 2024",
+    description:
+      "The KGMU Nursing Exam Preparation course equips students with essential knowledge and skills to excel in the KGMU nursing entrance exam, enhancing their chances of success.",
+    old_price: null,
+    discount_price: "\u20b915,000",
+    popularity: "Latest",
+  },
+  {
+    id: 4,
+    thumbnail: "/img/courses/course_thumb04.jpg",
+    category: "Nursing Exams",
+    title: "State Level Nursing Exam Preparation 2024",
+    description:
+      "The State Level Nursing Exam Preparation course for 2024 equips students with essential knowledge and skills to excel in state-specific nursing exams, including comprehensive study materials, practice tests, and expert guidance.",
+    old_price: null,
+    discount_price: "\u20b920,000",
+    popularity: "Average Rating",
+  },
+  {
+    id: 5,
+    thumbnail: "/img/courses/course_thumb01.jpg",
+    category: "NORCET",
+    title: "NORCET Preparation Course 2025",
+    description:
+      "The NORCET Preparation Course 2025 equips nursing students with essential knowledge and skills to excel in the Nursing Officer Recruitment Common Eligibility Test (NORCET).",
+    old_price: "\u20b922,000",
+    discount_price: "20,000",
+    popularity: "Most Popular",
+  },
+  {
+    id: 6,
+    thumbnail: "/img/courses/course_thumb02.jpg",
+    category: "RRB Staff Nursing",
+    title: "RRB Staff Nursing Exam 2024 Preparation",
+    description:
+      "The RRB Staff Nursing Exam 2024 Preparation course equips students with essential knowledge and skills to excel in the exam, focusing on nursing theory and practical applications.",
+    old_price: "18,500",
+    discount_price: "\u20b915,000",
+    popularity: "Popular",
+  },
+];
+
+// Generate static paths for all blog posts
+export async function getStaticPaths() {
+  const courses: coursesData[] = [
+    {
+      id: 1,
+      thumbnail: "/img/courses/course_thumb01.jpg",
+      category: "NORCET",
+      title: "NORCET Preparation Course 2024",
+      description:
+        "The NORCET Preparation Course 2024 equips nursing students with essential knowledge and skills to excel in the Nursing Officer Recruitment Common Eligibility Test (NORCET).",
+      old_price: "\u20b918,000",
+      discount_price: "15,000",
+      popularity: "Most Popular",
+    },
+    {
+      id: 2,
+      thumbnail: "/img/courses/course_thumb02.jpg",
+      category: "RRB Staff Nursing",
+      title: "RRB Staff Nursing Exam 2024 Preparation",
+      description:
+        "The RRB Staff Nursing Exam 2024 Preparation course equips students with essential knowledge and skills to excel in the exam, focusing on nursing theory and practical applications.",
+      old_price: "18,500",
+      discount_price: "\u20b915,000",
+      popularity: "Popular",
+    },
+    {
+      id: 3,
+      thumbnail: "/img/courses/course_thumb03.jpg",
+      category: "KGMU EXAM",
+      title: "KGMU Nursing Exam Preparation 2024",
+      description:
+        "The KGMU Nursing Exam Preparation course equips students with essential knowledge and skills to excel in the KGMU nursing entrance exam, enhancing their chances of success.",
+      old_price: null,
+      discount_price: "\u20b915,000",
+      popularity: "Latest",
+    },
+    {
+      id: 4,
+      thumbnail: "/img/courses/course_thumb04.jpg",
+      category: "Nursing Exams",
+      title: "State Level Nursing Exam Preparation 2024",
+      description:
+        "The State Level Nursing Exam Preparation course for 2024 equips students with essential knowledge and skills to excel in state-specific nursing exams, including comprehensive study materials, practice tests, and expert guidance.",
+      old_price: null,
+      discount_price: "\u20b920,000",
+      popularity: "Average Rating",
+    },
+    {
+      id: 5,
+      thumbnail: "/img/courses/course_thumb01.jpg",
+      category: "NORCET",
+      title: "NORCET Preparation Course 2025",
+      description:
+        "The NORCET Preparation Course 2025 equips nursing students with essential knowledge and skills to excel in the Nursing Officer Recruitment Common Eligibility Test (NORCET).",
+      old_price: "\u20b922,000",
+      discount_price: "20,000",
+      popularity: "Most Popular",
+    },
+    {
+      id: 6,
+      thumbnail: "/img/courses/course_thumb02.jpg",
+      category: "RRB Staff Nursing",
+      title: "RRB Staff Nursing Exam 2024 Preparation",
+      description:
+        "The RRB Staff Nursing Exam 2024 Preparation course equips students with essential knowledge and skills to excel in the exam, focusing on nursing theory and practical applications.",
+      old_price: "18,500",
+      discount_price: "\u20b915,000",
+      popularity: "Popular",
+    },
+  ];
+
+  return courses.map((post) => ({
+    params: { id: post.id.toString() },
+  }));
+}
+
+const { id } = Astro.params;
+const course = courses.find((post) => post.id.toString() === id);
+
+if (!course) {
+  throw new Error("Blog post not found");
+}
+---
+
+<Layout>
+  <main class="course-details section-py-120">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="course-details__header">
+            <img
+              src={course.thumbnail}
+              alt={course.title}
+              class="course-details__image"
+            />
+            <h1 class="course-details__title">{course.title}</h1>
+            <p class="course-details__description">{course.description}</p>
+          </div>
+
+          <div class="course-details__info">
+            <span class="course-details__category" style="padding: 1rem;"
+              >Category: {course.category}</span
+            >
+            <span class="course-details__popularity" style="padding: 1rem;"
+              >Popularity: {course.popularity}</span
+            >
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="course-details__sidebar">
+            <div class="course-details__pricing">
+              {
+                course.old_price && (
+                  <del class="old-price">{course.old_price}</del>
+                )
+              }
+              <span class="discount-price">{course.discount_price}</span>
+            </div>
+
+            <a href="#enroll" class="btn btn-primary">Enroll Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .course-details {
+    padding: 2rem 0;
+  }
+
+  .course-details__header {
+    margin-bottom: 2rem;
+  }
+
+  .course-details__image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .course-details__title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .course-details__description {
+    font-size: 1.125rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .course-details__info {
+    font-size: 1rem;
+    color: #333;
+    margin: 2rem;
+  }
+
+  .course-details__sidebar {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .course-details__pricing {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  .old-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-right: 0.5rem;
+  }
+
+  .discount-price {
+    color: #e63946;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #007bff;
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background: #0056b3;
+  }
+</style>

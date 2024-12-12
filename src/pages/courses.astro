@@ -1,0 +1,10 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Banner from "../components/Banner";
+import Courses from "../components/Courses";
+---
+
+<Layout>
+  <Banner client:only="react" />
+  <Courses client:only="react" />
+</Layout>
