@@ -2,9 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import Banner from "../components/Banner";
 import RankersCard from "@/components/RankersCard";
+import AchievementsBanner from "../components/AchievementsBanner";
 ---
 
 <Layout>
-  <Banner client:only="react" />
+  <AchievementsBanner client:only="react" />
   <RankersCard client:only="react" />
 </Layout>

@@ -86,40 +86,45 @@ const Courses = () => {
             <div className="tab-content" id="myTabContent" data-aos="fade-up" data-aos-delay="200">
               <div className="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
                 <div className="row courses__list-wrap row-cols-1">
-                  {currentCourses.map((course, index) => (
-                    <div className="col" data-aos="fade-up" data-aos-delay={250 + index * 50} key={course.name}>
-                      <div className="courses__item courses__item-three shine__animate-item">
-                        <div className="courses__item-thumb">
-                          <a className="shine__animate-link" href="course-details.html">
-                            <img src={`http://192.168.1.120:8012/${course.thumbnail}`}alt="img" />
-                          </a>
-                        </div>
-                        <div className="courses__item-content">
-                          <ul className="courses__item-meta list-wrap">
-                            <li className="courses__item-tag">
-                              <a href="course.html">{course.category}</a>
-                            </li>
-                            <li className="price">
-                              {course.old_price && <del>{course.old_price}</del>}
-                              {course.new_price}
-                            </li>
-                          </ul>
-                          <h5 className="title">
-                            <a href="course-details.html">{course.title}</a>
-                          </h5>
-                          <p className="info">{course.description}</p>
-                          <div className="courses__item-bottom">
-                            <div className="button">
-                              <a href={`/courses/${course.name}`}>
-                                <span className="text">Enroll Now</span>
-                                <i className="flaticon-arrow-right"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                {currentCourses.map((course, index) => (
+  <div className="col" data-aos="fade-up" data-aos-delay={250 + index * 50} key={course.name}>
+    <div className="courses__item courses__item-three shine__animate-item">
+      <div className="courses__item-thumb">
+        <a className="shine__animate-link" href={`/courses/${course.name}`}>
+          <img src={`http://192.168.1.120:8012/${course.thumbnail}`} alt="img" />
+        </a>
+      </div>
+      <div className="courses__item-content">
+        <ul className="courses__item-meta list-wrap">
+          <li className="courses__item-tag">
+            <a href={`/courses/${course.name}`}>{course.category}</a>
+          </li>
+          <li className="price">
+            {course.old_price ? (
+              <del>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(course.old_price)}</del>
+            ) : null}
+            {course.new_price ? (
+              <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(course.new_price)}</span>
+            ) : null}
+          </li>
+        </ul>
+        <h5 className="title">
+          <a href={`/courses/${course.name}`}>{course.title}</a>
+        </h5>
+        <p className="info">{course.description}</p>
+        <div className="courses__item-bottom">
+          <div className="button">
+            <a href={`/courses/${course.name}`}>
+              <span className="text">Enroll Now</span>
+              <i className="flaticon-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+
                 </div>
 
                 {/* Pagination */}

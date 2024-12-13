@@ -1,199 +1,205 @@
-  .active a {
-    font-weight: bold;
-    color: #ff0000; /* Highlight color */
-  }
-  .slider {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 100%;
-    height: auto; /* Maintain height based on aspect ratio */
-    aspect-ratio: 1920 / 550;
-  }
+.active a {
+  font-weight: bold;
+  color: #ff0000; /* Highlight color */
+}
+.slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  height: auto; /* Maintain height based on aspect ratio */
+  aspect-ratio: 1920 / 550;
+}
 
-  .slides {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-  }
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
 
-  .slides img {
-    width: 1920px;
-    height: auto;
-    object-fit: cover;
-  }
+.slides img {
+  width: 1920px;
+  height: auto;
+  object-fit: cover;
+}
 
+button.prev,
+button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+button.prev {
+  left: 1rem;
+}
+
+button.next {
+  right: 1rem;
+}
+
+.pagination {
+  position: absolute;
+  bottom: 10px; /* Adjust based on your preference */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #bababa;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: #f80300;
+}
+
+.responsive-img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   button.prev,
   button.next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 1rem;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
   }
 
   button.prev {
-    left: 1rem;
+    left: 0.5rem;
   }
 
   button.next {
-    right: 1rem;
-  }
-
-  .pagination {
-    position: absolute;
-    bottom: 10px; /* Adjust based on your preference */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
+    right: 0.5rem;
   }
 
   .dot {
-    display: inline-block;
     width: 10px;
     height: 10px;
-    margin: 0 5px;
-    background-color: #bababa;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  }
+}
+
+@media (max-width: 480px) {
+  button.prev,
+  button.next {
+    padding: 0.3rem;
+    font-size: 0.8rem;
   }
 
-  .dot.active {
-    background-color: #f80300;
+  button.prev {
+    left: 0.3rem;
   }
 
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    button.prev,
-    button.next {
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
-
-    button.prev {
-      left: 0.5rem;
-    }
-
-    button.next {
-      right: 0.5rem;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-    }
+  button.next {
+    right: 0.3rem;
   }
 
-  @media (max-width: 480px) {
-    button.prev,
-    button.next {
-      padding: 0.3rem;
-      font-size: 0.8rem;
-    }
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+}
 
-    button.prev {
-      left: 0.3rem;
-    }
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #000;
+  margin-bottom: 20px;
+}
 
-    button.next {
-      right: 0.3rem;
-    }
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
-    .dot {
-      width: 8px;
-      height: 8px;
-    }
+.video-play-button {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  box-sizing: content-box;
+  display: block;
+  width: 32px;
+  height: 44px;
+  padding: 18px 20px 18px 28px;
+}
+
+.video-play-button:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  display: block;
+  width: 55px;
+  height: 55px;
+  background: #eb2055;
+  border-radius: 50%;
+  animation: pulse-border 1100ms ease-out infinite;
+}
+
+.video-play-button:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  display: block;
+  width: 60px;
+  height: 60px;
+  background: #eb2055;
+  border-radius: 50%;
+  transition: all 200ms;
+}
+
+.video-play-button span {
+  display: block;
+  position: relative;
+  z-index: 3;
+  width: 0;
+  height: 0;
+  border-left: 19px solid #fff;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  top: 10px;
+  left: 5px;
+}
+
+@keyframes pulse-border {
+  0% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+    opacity: 1;
   }
 
-  .video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    max-width: 100%;
-    background: #000;
-    margin-bottom: 20px;
+  100% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+    opacity: 0;
   }
-
-  .video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .video-play-button {
-    position: absolute;
-    z-index: 10;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    box-sizing: content-box;
-    display: block;
-    width: 32px;
-    height: 44px;
-    padding: 18px 20px 18px 28px;
-  }
-
-  .video-play-button:before {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    display: block;
-    width: 55px;
-    height: 55px;
-    background: #eb2055;
-    border-radius: 50%;
-    animation: pulse-border 1100ms ease-out infinite;
-  }
-
-  .video-play-button:after {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    display: block;
-    width: 60px;
-    height: 60px;
-    background: #eb2055;
-    border-radius: 50%;
-    transition: all 200ms;
-  }
-
-  .video-play-button span {
-    display: block;
-    position: relative;
-    z-index: 3;
-    width: 0;
-    height: 0;
-    border-left: 19px solid #fff;
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-    top: 10px;
-    left: 5px;
-  }
-
-  @keyframes pulse-border {
-    0% {
-      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
-      opacity: 1;
-    }
-
-    100% {
-      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
-      opacity: 0;
-    }
-  }
+}

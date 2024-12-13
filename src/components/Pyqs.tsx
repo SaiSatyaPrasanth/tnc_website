@@ -1,43 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Accordion: React.FC = () => {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [data, setData] = useState<any[]>([]); // Use state to store API response data
+  const [loading, setLoading] = useState<boolean>(true); // Track loading state
+  const [error, setError] = useState<string | null>(null); // Track error state
 
-  // Data defined within the component
-  const data = [
-    {
-      exam_name: "1. NORCET (2023)",
-      subjects: [
-        {
-          subject_name: "Medical-Surgical Nursing",
-          download: "/sample.pdf",
-          file_type: "PDF",
-          file_size: "2 MB",
-        },
-        {
-          subject_name: "Pediatric Nursing",
-          download: "/sample.pdf",
-          file_type: "PDF",
-          file_size: "1.5 MB",
-        },
-      ],
-    },
-    {
-      exam_name: "2. NORCET (2022)",
-      subjects: [
-        {
-          subject_name: "Mental Health Nursing",
-          download: "/sample.pdf",
-          file_type: "PDF",
-          file_size: "3 MB",
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    // Function to fetch data from the API
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://192.168.1.120:8012/api/method/course_management.course_management.doctype.pyq.pyq.get_all_pyq");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = await response.json();
+        setData(result.message); // Update the data state with the response
+      } catch (error: any) {
+        setError(error.message); // Set error message if fetch fails
+      } finally {
+        setLoading(false); // Stop loading once the fetch is done
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
   const toggleAccordion = (examName: string) => {
     setOpenAccordion((prev) => (prev === examName ? null : examName));
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; // Show error message if fetch fails
+  }
 
   return (
     <section className="pyq-accordion-section">
@@ -75,7 +74,7 @@ const Accordion: React.FC = () => {
                         <td>{subject.subject_name}</td>
                         <td>
                           <a
-                            href={subject.download}
+                            href={`http://192.168.1.120:8012/${subject.download}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="pyq-download-link"

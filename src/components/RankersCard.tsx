@@ -1,69 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-// Define the types for the course data
 interface Course {
   thumbnail: string;
   rank: string;
-  name: string;
-  regNo: string;
-  year:string;
-  exam:string
+  name1: string;
+  registration_number: string;
+  year: string;
+  exam: string;
 }
 
-// Sample data for the courses
-const coursesData: Course[] = [
-  {
-    thumbnail: "/img/result.jpg",
-    rank: "AIR 1 (NORCET 6.0)",
-    name: "Anand Verma",
-    regNo: "123456789",
-    year:"2024",
-    exam:"NORCET 6.0"
-  },
-  {
-    thumbnail: "/img/result.jpg",
-    rank: "AIR 2 (RRB Exams)",
-    name: "Priya Sharma",
-    regNo: "987654321",
-    year:"2023",
-    exam:"RRB Exams"
-
-  },
-  {
-    thumbnail: "/img/result.jpg",
-    rank: "AIR 1 (Statewise Nursing Exams)",
-    name: "Vikash Kumar",
-    regNo: "112233445",
-    year:"2021",
-    exam:"Statewise Nursing Exams"
-
-  },
-  {
-    thumbnail: "/img/result.jpg",
-    rank: "AIR 5 (Statewise Nursing Exams)",
-    name: "Vikash Kumar",
-    regNo: "112233445",
-    year:"2022",
-    exam:"Statewise Nursing Exams"
-
-  },
-  {
-    thumbnail: "/img/result.jpg",
-    rank: "AIR 2 (Statewise Nursing Exams)",
-    name: "Vikash Kumar",
-    regNo: "112233445",
-    year:"2021",
-    exam:"Statewise Nursing Exams"
-
-  },
-  // Add more course objects as needed
-];
-
-
 const Courses: React.FC = () => {
-  // State for selected exams and years
+  const [coursesData, setCoursesData] = useState<Course[]>([]);
   const [selectedExams, setSelectedExams] = useState<string[]>([]);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch data from the API
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(
+          'http://192.168.1.120:8012/api/resource/Rankers?fields=["name1","registration_number","thumbnail","exam","year","rank"]'
+        );
+        setCoursesData(response.data.data);
+      } catch (err) {
+        setError("Failed to fetch data. Please try again later.");
+        console.error("API Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   // Handle checkbox change for exams
   const handleExamChange = (exam: string) => {
@@ -111,12 +84,12 @@ const Courses: React.FC = () => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          value="NORCET 6.0"
+                          value="NORCET"
                           id="cat_1"
-                          onChange={() => handleExamChange("NORCET 6.0")}
+                          onChange={() => handleExamChange("NORCET")}
                         />
                         <label className="form-check-label" htmlFor="cat_1">
-                          NORCET 6.0
+                          NORCET
                         </label>
                       </div>
                     </li>
@@ -249,13 +222,17 @@ const Courses: React.FC = () => {
                 aria-labelledby="grid-tab"
               >
                 <div className="row courses__grid-wrap row-cols-1 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1">
-                  {filteredCourses.length > 0 ? (
+                  {loading ? (
+                    <p>Loading...</p>
+                  ) : error ? (
+                    <p>{error}</p>
+                  ) : filteredCourses.length > 0 ? (
                     filteredCourses.map((course, index) => (
                       <div className="col" key={index}>
                         <div className="courses__item shine__animate-item">
                           <div className="courses__item-thumb">
-                            <a className="shine__animate-link" href="course-details.html">
-                              <img src={course.thumbnail} alt="img" />
+                            <a className="shine__animate-link" href="/courses">
+                              <img src={`http://192.168.1.120:8012/${course.thumbnail}`} alt="img" />
                             </a>
                           </div>
                           <div className="courses__item-content">
@@ -264,8 +241,8 @@ const Courses: React.FC = () => {
                                 <a href="course.html">{course.rank}</a>
                               </li>
                             </ul>
-                            <h5 className="title">{course.name}</h5>
-                            <p>Reg No: {course.regNo}</p>
+                            <h5 className="title">{course.name1}</h5>
+                            <p>Reg No: {course.registration_number}</p>
                           </div>
                         </div>
                       </div>
@@ -284,5 +261,3 @@ const Courses: React.FC = () => {
 };
 
 export default Courses;
-
-
